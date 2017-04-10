@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+/*
+Term Project - CIS 721
+Author: Dhananjay Mehta and Swapnil Kumar
+
+Project: Leveraging Formal Methods, Verification and Validation for Real-time Object Detection.
+*/
+
+typedef int[0,1] ele;
+int i = 0;
+int j = 0;
+int count = 0;
+ele arr[10][10] = {
+{1,1,1,1,1,1,1,1,1,1},
+{1,1,0,1,0,1,1,1,1,1},
+{1,1,0,1,0,1,1,1,1,1},
+{1,1,1,1,1,1,1,1,1,1},
+{1,1,1,1,1,1,1,1,1,1},
+{1,1,1,1,1,1,1,1,1,1},
+{1,1,1,1,1,1,1,1,1,1},
+{1,1,1,1,0,1,0,1,1,1},
+{1,1,1,1,0,1,0,1,1,1},
+{1,1,1,1,1,1,1,1,1,1}
+};
+</declaration>
+	<template>
+		<name x="5" y="5">WebCamDetection</name>
+		<declaration>// Place local declarations here.
+
+// Haar Features
+void isFace(){
+    bool res = (arr[i][j] == 1 &amp;&amp;
+    arr[i][j+1] == 1 &amp;&amp;
+    arr[i][j+2] == 1 &amp;&amp;
+    arr[i+1][j] == 0 &amp;&amp;
+    arr[i+1][j+1] == 1 &amp;&amp;
+    arr[i+1][j+2] == 0 &amp;&amp;
+    arr[i+2][j] == 0 &amp;&amp;
+    arr[i+2][j+1] == 1 &amp;&amp;
+    arr[i+2][j+2] == 0);
+
+    if(res) {
+        count = count + 1;
+    }
+}
+
+</declaration>
+		<location id="id0" x="-212" y="-374">
+			<name x="-222" y="-408">Final</name>
+		</location>
+		<location id="id1" x="-578" y="-374">
+			<name x="-588" y="-408">Inital</name>
+		</location>
+		<init ref="id1"/>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id0"/>
+			<nail x="-110" y="-323"/>
+			<nail x="-110" y="-357"/>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id1"/>
+			<label kind="guard" x="-832" y="-403">i &lt;= 7 &amp;&amp; j == 7</label>
+			<label kind="assignment" x="-832" y="-369">i = i+1, j = 0, isFace()</label>
+			<nail x="-850" y="-365"/>
+			<nail x="-799" y="-280"/>
+			<nail x="-586" y="-365"/>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="guard" x="-493" y="-399">i == 8</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id1"/>
+			<label kind="guard" x="-619" y="-246">i &lt;= 7 &amp;&amp; j &lt;7</label>
+			<label kind="assignment" x="-619" y="-212">j = j+1, isFace()</label>
+			<nail x="-535" y="-212"/>
+			<nail x="-637" y="-212"/>
+		</transition>
+	</template>
+	<system>system WebCamDetection;
+    </system>
+	<queries>
+		<query>
+			<formula>E&lt;&gt; count ==2
+			</formula>
+			<comment>
+			</comment>
+		</query>
+		<query>
+			<formula>A[] not deadlock
+			</formula>
+			<comment>
+			</comment>
+		</query>
+	</queries>
+</nta>
